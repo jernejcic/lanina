@@ -16,7 +16,7 @@
       );
     };
 
-    navigator.geolocation.getCurrentPosition(getWeather, function(err) { $log.debug(err); });
+    // navigator.geolocation.getCurrentPosition(getWeather, function(err) { $log.debug(err); });
   }
 
   angular.module('lanina.weather', [
