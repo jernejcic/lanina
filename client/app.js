@@ -11,5 +11,14 @@
   })
   ;
 
+  function onReady() {
+      angular.bootstrap(document, ['lanina']);
+  }
+
+  if (Meteor.isCordova)
+      angular.element(document).on("deviceready", onReady);
+  else
+      angular.element(document).ready(onReady);
+
 })();
 

@@ -1,11 +1,11 @@
 (function() {
 
-  function WeatherCtrl($log, $meteor) {
+  function WeatherCtrl($log, $meteor, $timeout) {
     var self = this;
     self.data = 'Retrieving weather...';
 
-    var getWeather = function(position) {
-      $meteor.call('getWeather', position.coords.latitude, position.coords.longitude).then(
+    var getWeather = function(latitude, longitude) {
+      $meteor.call('getWeather', latitude, longitude).then(
         function success(data) {
           self.data = JSON.stringify(JSON.parse(data.content), null, 2);
           $log.debug(data);
@@ -16,7 +16,19 @@
       );
     };
 
-    // navigator.geolocation.getCurrentPosition(getWeather, function(err) { $log.debug(err); });
+    //navigator.geolocation.getCurrentPosition(getWeather, function(err) { $log.debug(err); });
+
+    var getLocation = function() {
+      var loc = Geolocation.currentLocation();
+      if (!loc) {
+        self.data += '.';
+        $timeout(getLocation, 500);
+      } else {
+        getWeather(loc.coords.latitude, loc.coords.longitude);
+      }
+    };
+
+    getLocation();
   }
 
   angular.module('lanina.weather', [
